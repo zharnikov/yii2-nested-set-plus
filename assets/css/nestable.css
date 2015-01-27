@@ -1,0 +1,48 @@
+.nested { position: relative; display: block; margin: 0; padding: 0; max-width: 600px; list-style: none; font-size: 13px; line-height: 20px; }
+.nested-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
+.nested-list .nested-list { padding-left: 30px; }
+.nested-collapsed .nested-list { display: none; }
+.nested-item, .nested-empty, .nested-placeholder { display: block; position: relative; margin: 0; padding: 0; min-height: 20px; font-size: 13px; line-height: 20px; }
+.nested-handle {
+    height: 33px;
+    margin: 5px 0;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background: linear-gradient(top, #fafafa 0%, #eee 100%);
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.nested-handle:hover { color: #2e6da4; background: #ddd; }
+.nested-actions {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+.nested-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 20px; margin: 7px 0; padding: 5px 0; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 8px; line-height: 1; text-align: center; font-weight: bold; }
+.nested-item > button:before { display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
+.nested-item > button[data-action="collapse"]:before { }
+.nested-actions a:first-child { margin-right: 5px; }
+.nested-placeholder,
+.nested-empty { margin: 5px 0; padding: 0; min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
+.nested-empty {
+    border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+    -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+    linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}
+.nested-dragel { position: absolute; pointer-events: none; z-index: 9999; }
+.nested-dragel > .nested-item .nested-handle { margin-top: 0; }
+.nested-dragel .nested-handle {
+    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+    box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+}

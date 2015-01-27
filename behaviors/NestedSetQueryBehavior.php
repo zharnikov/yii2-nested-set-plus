@@ -1,0 +1,100 @@
+<?php
+/**
+ * @link https://github.com/wbraganca/yii2-nested-set-behavior
+ * @copyright Copyright (c) 2014 Wanderson Bragança
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
+
+namespace kgladkiy\behaviors;
+
+use yii\base\Behavior;
+
+/**
+ * @author Wanderson Bragança <wanderson.wbc@gmail.com>
+ */
+class NestedSetQueryBehavior extends Behavior
+{
+    /**
+     * @var ActiveQuery the owner of this behavior.
+     */
+    public $owner;
+
+    /**
+     * Gets root node(s).
+     * @return ActiveRecord the owner.
+     */
+    public function roots()
+    {
+        /** @var $modelClass ActiveRecord */
+        $modelClass = $this->owner->modelClass;
+        $model = new $modelClass;
+        $this->owner->andWhere($modelClass::getDb()->quoteColumnName($model->leftAttribute) . '=1');
+        unset($model);
+        return $this->owner;
+    }
+
+    public function tree($root = false, $level = null)
+    {
+
+        $tree = [];
+
+        if ($root === false) {
+            $ownerClass = $this->owner->modelClass;
+            $items = $ownerClass::find()->roots()->all();
+        } else {
+            $items = $root->children()->all();
+        }
+
+        foreach ($items as $item) {
+            $tree[$item->id] = [
+                'id' => $item->id,
+                'name' => $item->{$item->titleAttribute},
+                'children' => $this->tree($item),
+            ];
+        }
+
+        return $tree;
+
+    }
+
+
+    public function options($root = 0, $level = null, $path = null)
+    {
+        $res = [];
+        if (is_object($root)) {
+            $res[$root->{$root->idAttribute}] = $path
+                . ((($root->{$root->levelAttribute}) > 1) ? ' -> ': '')
+                . $root->{$root->titleAttribute};
+
+            if ($level) {
+                foreach ($root->children()->all() as $childRoot) {
+                    $res += $this->options($childRoot, $level - 1, $level);
+                }
+            } elseif (is_null($level)) {
+                foreach ($root->children()->all() as $childRoot) {
+                    $res += $this->options($childRoot, null, ($path) ? $path . ' -> ' . $root->{$root->titleAttribute} : $root->{$root->titleAttribute});
+                }
+            }
+        } elseif (is_scalar($root)) {
+            if ($root == 0) {
+                foreach ($this->roots()->all() as $rootItem) {
+                    if ($level) {
+                        $res += $this->options($rootItem, $level - 1, $rootItem->{$rootItem->titleAttribute});
+                    } elseif (is_null($level)) {
+                        $res += $this->options($rootItem, null);
+                    }
+                }
+            } else {
+                $modelClass = $this->owner->modelClass;
+                $model = new $modelClass;
+                $root = $modelClass::find()->andWhere([$model->idAttribute => $root])->one();
+                if ($root) {
+                    $res += $this->options($root, $level);
+                }
+                unset($model);
+            }
+        }
+        return $res;
+    }
+
+}
