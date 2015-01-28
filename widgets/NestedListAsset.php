@@ -1,12 +1,16 @@
 <?php
+/**
+ * @project   Nested Set Plus
+ * @author    Kirill Gladkiy <kirill.gladkiy@gmail.com>
+ * @link      https://github.com/kgladkiy/yii2-nested-set-plus
+ * @date      21.01.2015
+ * @version   0.2
+ */
 
 namespace kgladkiy\widgets;
 
 /**
  * Asset bundle for Nestable Widget
- *
- * @author Kirill Gladkiy <kirill.gadkiy@gmail.com>
- * @since 1.0
  */
 class NestedListAsset extends \yii\web\AssetBundle
 {

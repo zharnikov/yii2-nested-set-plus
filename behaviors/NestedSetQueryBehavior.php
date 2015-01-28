@@ -1,17 +1,16 @@
 <?php
 /**
- * @link https://github.com/wbraganca/yii2-nested-set-behavior
- * @copyright Copyright (c) 2014 Wanderson Bragança
- * @license http://opensource.org/licenses/BSD-3-Clause
+ * @project   Nested Set Plus
+ * @author    Kirill Gladkiy <kirill.gladkiy@gmail.com>
+ * @link      https://github.com/kgladkiy/yii2-nested-set-plus
+ * @date      21.01.2015
+ * @version   0.2
  */
 
 namespace kgladkiy\behaviors;
 
 use yii\base\Behavior;
 
-/**
- * @author Wanderson Bragança <wanderson.wbc@gmail.com>
- */
 class NestedSetQueryBehavior extends Behavior
 {
     /**
@@ -56,7 +55,6 @@ class NestedSetQueryBehavior extends Behavior
         return $tree;
 
     }
-
 
     public function options($root = 0, $level = null, $path = null)
     {

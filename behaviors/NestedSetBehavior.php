@@ -1,8 +1,10 @@
 <?php
 /**
- * @link https://github.com/wbraganca/yii2-nested-set-behavior
- * @copyright Copyright (c) 2013 Alexander Kochetov
- * @license http://opensource.org/licenses/BSD-3-Clause
+ * @project   Nested Set Plus
+ * @author    Kirill Gladkiy <kirill.gladkiy@gmail.com>
+ * @link      https://github.com/kgladkiy/yii2-nested-set-plus
+ * @date      21.01.2015
+ * @version   0.2
  */
 
 namespace kgladkiy\behaviors;
@@ -14,10 +16,6 @@ use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\db\Exception;
 
-/**
- * @author Alexander Kochetov <creocoder@gmail.com>
- * @author Wanderson Bragança <wanderson.wbc@gmail.com>
- */
 class NestedSetBehavior extends Behavior
 {
     /**
