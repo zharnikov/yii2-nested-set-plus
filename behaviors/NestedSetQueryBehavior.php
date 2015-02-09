@@ -56,30 +56,30 @@ class NestedSetQueryBehavior extends Behavior
 
     }
 
-    public function options($root = 0, $level = null, $path = null)
+    public function options($root = 0, $level = null, $path = null, $exclude = null)
     {
         $res = [];
-        if (is_object($root)) {
+        if (is_object($root) && $root->id != $exclude) {
             $res[$root->{$root->idAttribute}] = $path
                 . ((($root->{$root->levelAttribute}) > 1) ? ' -> ': '')
                 . $root->{$root->titleAttribute};
 
             if ($level) {
                 foreach ($root->children()->all() as $childRoot) {
-                    $res += $this->options($childRoot, $level - 1, $level);
+                    $res += $this->options($childRoot, $level - 1, $level, $exclude);
                 }
             } elseif (is_null($level)) {
                 foreach ($root->children()->all() as $childRoot) {
-                    $res += $this->options($childRoot, null, ($path) ? $path . ' -> ' . $root->{$root->titleAttribute} : $root->{$root->titleAttribute});
+                    $res += $this->options($childRoot, null, ($path) ? $path . ' -> ' . $root->{$root->titleAttribute} : $root->{$root->titleAttribute}, $exclude);
                 }
             }
-        } elseif (is_scalar($root)) {
+        } elseif (is_scalar($root) && $root != $exclude) {
             if ($root == 0) {
                 foreach ($this->roots()->all() as $rootItem) {
                     if ($level) {
-                        $res += $this->options($rootItem, $level - 1, $rootItem->{$rootItem->titleAttribute});
+                        $res += $this->options($rootItem, $level - 1, $rootItem->{$rootItem->titleAttribute}, $exclude);
                     } elseif (is_null($level)) {
-                        $res += $this->options($rootItem, null);
+                        $res += $this->options($rootItem, null, null, $exclude);
                     }
                 }
             } else {
