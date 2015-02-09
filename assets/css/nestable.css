@@ -1,4 +1,4 @@
-.nested { position: relative; display: block; margin: 0; padding: 0; max-width: 600px; list-style: none; font-size: 13px; line-height: 20px; }
+.nested { position: relative; display: block; margin: 0; padding: 0; list-style: none; font-size: 13px; line-height: 20px; }
 .nested-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
 .nested-list .nested-list { padding-left: 30px; }
 .nested-collapsed .nested-list { display: none; }

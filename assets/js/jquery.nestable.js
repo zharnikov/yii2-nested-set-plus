@@ -38,13 +38,13 @@
             placeClass      : 'nested-placeholder',
             noDragClass     : 'nested-nodrag',
             emptyClass      : 'nested-empty',
-            collapsableTree : true,
+            poolClass       : 'nested-pool',
+            poolData        : [],
             expandBtnHTML   : '<button data-action="expand" type="button"><span class="glyphicon glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button>',
             collapseBtnHTML : '<button data-action="collapse" type="button"><span class="glyphicon glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>',
             group           : 0,
             maxDepth        : 5,
-            threshold       : 20,
-            onDragFinished  : function(currentNode, parentNode, previousNode) { }
+            threshold       : 20
         };
 
     function Plugin(element, options)
@@ -52,6 +52,7 @@
         this.w  = $(document);
         this.el = $(element);
         this.options = $.extend({}, defaults, options);
+        this.poolData = [];
         this.init();
     }
 
@@ -84,7 +85,6 @@
                 if (action === 'expand') {
                     list.expandItem(item);
                 }
-                console.log(this);
             });
 
             var onStartEvent = function(e)
@@ -297,15 +297,38 @@
 
             this.dragEl.remove();
 
-            var $parents = $(el[0]).parents('.' + list.options.itemClass);
-            var $parent = null;
-            if ($parents.length > 0) $parent = $parents[0];
-            list.options.onDragFinished(el[0], $parent, el[0].previousSibling);
+            list.updatePool(el);
+
             this.el.trigger('change');
             if (this.hasNewRoot) {
                 this.dragRootEl.trigger('change');
             }
             this.reset();
+        },
+
+        updatePool: function(el) {
+
+            var action = {};
+
+            var parent = null;
+            var parents = $(el).parents('.' + this.options.itemClass);
+            if (parents.length > 0) parent = parents[0];
+
+            action['id'] = el.attr('data-id');
+            action['prev'] = el.prev().attr('data-id');
+            action['parent'] = $(parent).attr('data-id');
+
+            this.poolData.push(action);
+
+        },
+
+        clearPool: function() {
+            this.poolData = [];
+        },
+
+        diff: function()
+        {
+            return this.poolData;
         },
 
         dragMove: function(e)

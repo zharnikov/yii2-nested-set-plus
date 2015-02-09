@@ -79,14 +79,7 @@ class NestedList extends Widget
         $view = $this->getView();
 
         NestedListAsset::register($view);
-        $js = "$('." . $this->wrapClass . "').nestable({
-            onDragFinished: function(currentNode, parentNode, previousNode) {
-                // console.log(currentNode);
-                // console.log(parentNode);
-                // console.log(previousNode);
-            }
-        });
-        ";
+        $js = "$('." . $this->wrapClass . "').nestable();";
         $view->registerJs($js);
 
     }
