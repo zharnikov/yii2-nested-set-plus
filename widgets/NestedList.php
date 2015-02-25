@@ -79,7 +79,13 @@ class NestedList extends Widget
         $view = $this->getView();
 
         NestedListAsset::register($view);
-        $js = "$('." . $this->wrapClass . "').nestable();";
+        $js = "$('." . $this->wrapClass . "').nestable({
+            listNodeName: 'ul',
+            rootClass: 'nested',
+            listClass: 'nested-list',
+            itemCkass: 'nested-item',
+            handleClass: 'nested-handle', 
+        });";
         $view->registerJs($js);
 
     }
