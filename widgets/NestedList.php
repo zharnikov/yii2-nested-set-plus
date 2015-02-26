@@ -22,6 +22,10 @@ class NestedList extends Widget
 
     public $actions = true;
 
+    public $jsOptions = [];
+
+    public $options = [];
+
     public function run()
     {
         $this->registerAssets();
@@ -31,7 +35,8 @@ class NestedList extends Widget
     protected function renderInput()
     {
         if ( count($this->items) > 0 ) {
-            echo Html::tag('div', $this->buildList($this->items), ['class'=>$this->wrapClass]);
+            $this->options['class'] = isset($this->options['class']) ? $this->options['class'].' '.$this->wrapClass : $this->wrapClass;
+            echo Html::tag('div', $this->buildList($this->items), $this->options);
         }
     }
 
@@ -78,13 +83,28 @@ class NestedList extends Widget
 
         $view = $this->getView();
 
+        $opString = '';
+        foreach ($this->jsOptions as $key => $value) {
+            if(preg_match("/^js:(.+)/", $value, $matches)) {
+                $opString .= $key.": ".$matches[1].", ";
+            } 
+            else {
+                $opString .= $key.": '".$value."', "; 
+            }
+        }
+
         NestedListAsset::register($view);
         $js = "$('." . $this->wrapClass . "').nestable({
             listNodeName: 'ul',
             rootClass: 'nested',
             listClass: 'nested-list',
             itemCkass: 'nested-item',
-            handleClass: 'nested-handle', 
+            handleClass: 'nested-handle',
+            emptyClass: 'nested-empty',
+            placeClass: 'nested-placeholder',
+            collapsedClass: 'nested-collapsed',
+            dragClass: 'nested-dragel',
+            " . $opString . " 
         });";
         $view->registerJs($js);
 

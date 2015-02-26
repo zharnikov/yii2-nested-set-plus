@@ -40,8 +40,11 @@ class NestedSetQueryBehavior extends Behavior
         if ($root === false) {
             $ownerClass = $this->owner->modelClass;
             $items = $ownerClass::find()->roots()->all();
-        } else {
+        } elseif($root->{$root->rightAttribute} - $root->{$root->leftAttribute} > 1) {
             $items = $root->children()->all();
+        }
+        else {
+            $items = [];
         }
 
         foreach ($items as $item) {
